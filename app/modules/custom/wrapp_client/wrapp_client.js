@@ -22,7 +22,7 @@ function wrapp_client_field_widget_form(form, form_state, field, instance, langc
 */
 function wrapp_client_menu() {
   var items = {};
-  items['add-entry'] = {
+  items['node/add'] = {
     title: 'Add an Entry',
     page_callback: 'wrapp_client_entry_add_page',
     options:{
@@ -37,7 +37,7 @@ function wrapp_client_menu() {
   return items;
 }
 
-function wrapp_client_deviceready() {
+/*function wrapp_client_deviceready() {
 	$.ajax({
 		  dataType: "json",
 		  async: false,
@@ -52,12 +52,12 @@ function wrapp_client_deviceready() {
 			  return true;
 		  }
 		});
-}
+}*/
 /**
  * Implements hook_drupalgap_goto_preprocess().
  */
-function wrapp_client_drupalgap_goto_preprocess(path) {
-	if (path == 'add-entry') {
+/*function wrapp_client_drupalgap_goto_preprocess(path) {
+	if (path == drupalgap.settings.front) {
 		if (parseInt(Drupal.user.uid,10) == 0) {
 			Drupal.settings.allowedFrameworks = null;
     		drupalgap_goto('user/login');
@@ -82,7 +82,7 @@ function wrapp_client_drupalgap_goto_preprocess(path) {
     	}
 		
 	}
-}
+}*/
 
 
 /**
@@ -99,7 +99,19 @@ function wrapp_client_entry_add_page() {
       }
     };
     var items = [];
-    var d = Drupal.settings.allowedFrameworks;
+   
+    $.each(
+      Drupal.user.content_types_user_permissions,
+      function(type, permissions) {
+        if (permissions.create) {
+          items.push(l(drupalgap.content_types_list[type].name,
+          'node/add/' + type));
+        }
+      }
+    );
+    content.node_type_listing.items = items;
+    /*
+     var d = Drupal.settings.allowedFrameworks;
     if (d) {
 	    for (var idx in d) {
 			var type = d[idx];
@@ -114,7 +126,7 @@ function wrapp_client_entry_add_page() {
     	content['no_framework'] = {
 				markup: '<p>Sorry, you cannot add entries at the moment.</p>'
 		}
-    }
+    }*/
     if (parseInt(Drupal.user.uid,10) == 0) {
     	content['no_framework'] = {
 				markup: '<p>You must login in order to add entries.</p>'

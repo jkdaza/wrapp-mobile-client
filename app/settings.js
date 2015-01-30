@@ -56,7 +56,7 @@ drupalgap.settings.mode = 'phonegap';
 drupalgap.settings.title = 'DrupalGap';
  
 // App Front Page
-drupalgap.settings.front = 'add-entry';
+drupalgap.settings.front = 'node/add';
 
 // Theme
 drupalgap.settings.theme = 'easystreet3';
